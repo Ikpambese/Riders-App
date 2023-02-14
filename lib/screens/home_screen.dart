@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_riders_app/authentication/auth_screen.dart';
 import 'package:food_riders_app/global/global.dart';
+import 'package:food_riders_app/screens/new_orders_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -44,7 +45,12 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: () {
             if (index == 0) {
               // new available order
-
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewOrderScreen(),
+                ),
+              );
             }
             if (index == 1) {
               // perc
