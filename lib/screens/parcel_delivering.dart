@@ -26,26 +26,32 @@ class ParcelDeliveringScreen extends StatefulWidget {
 }
 
 class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
+  String orderTotalAmount = '';
   confirmParcelHasBeenDelivered(getOrderId, sellerId, purchaserId,
       purchaserAddress, purchaserLat, purchaserLng) {
+    String riderNewTotalEarningAmount = ((double.parse(previousRiderEarnings) +
+            (double.parse(perParcelDeliveryAmount))))
+        .toString();
     FirebaseFirestore.instance.collection('orders').doc(getOrderId).update({
       'status': 'ended',
       'address': completeAddress,
       'lat': position!.latitude,
       'lng': position!.longitude,
-      'earnings': '' //pay per delivery
+      'earnings': perParcelDeliveryAmount //pay per delivery
     }).then((value) {
       FirebaseFirestore.instance
           .collection('riders')
           .doc(sharedPreferences!.getString('uid'))
           .update({
-        'earnings': '', // total rider earnings
+        'earnings': riderNewTotalEarningAmount, // total rider earnings
       }).then((value) {
         FirebaseFirestore.instance
             .collection('sellers')
             .doc(widget.sellerId)
             .update({
-          'earnings': '',
+          'earnings': (double.parse(orderTotalAmount) +
+                  (double.parse(previousEarnings)))
+              .toDouble(),
         });
       });
     }).then((value) {
@@ -66,6 +72,37 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
         builder: (c) => const MySplashScreen(),
       ),
     );
+  }
+
+  getOrderTotalAmount() {
+    FirebaseFirestore.instance
+        .collection('orders')
+        .doc(widget.getOrderId)
+        .get()
+        .then((snap) {
+      orderTotalAmount = snap.data()!['totalAmount'].toString();
+      widget.sellerId = snap.data()!['sellerUID'].toString();
+    }).then((value) {
+      getSellerData();
+    });
+  }
+
+  getSellerData() {
+    FirebaseFirestore.instance
+        .collection('sellers')
+        .doc(widget.sellerId)
+        .get()
+        .then((snap) {
+      previousEarnings = snap.data()!['earnings'].toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    UserLocation uLocation = UserLocation(); // Rider location
+    uLocation.getCurrentLocation();
+    getOrderTotalAmount();
   }
 
   @override

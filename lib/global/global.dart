@@ -9,3 +9,7 @@ Position? position;
 List<Placemark>? placeMarks;
 LocationPermission? permission;
 String completeAddress = '';
+
+String perParcelDeliveryAmount = '';
+String previousEarnings = ''; // seller old / initial earnings
+String previousRiderEarnings = ''; // Riders old / initial earnings
