@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:food_riders_app/assistant/get_current_location.dart';
 import 'package:food_riders_app/authentication/auth_screen.dart';
 import 'package:food_riders_app/global/global.dart';
 import 'package:food_riders_app/screens/new_orders_screen.dart';
+import 'package:food_riders_app/screens/parcel_in_progress_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -54,6 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             if (index == 1) {
               // perc
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ParcelInProgressScreen(),
+                ),
+              );
             }
             if (index == 2) {
               // new order
@@ -105,6 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    UserLocation? uLocation = UserLocation();
+    uLocation.getCurrentLocation();
   }
 
   @override
