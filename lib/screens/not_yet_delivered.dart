@@ -6,24 +6,24 @@ import 'package:food_riders_app/widget/oder_card.dart';
 import '../widget/progress_bar.dart';
 import '../widget/simple_appbar.dart';
 
-class ParcelInProgressScreen extends StatefulWidget {
+class NotYetDeliveredScreen extends StatefulWidget {
   @override
-  _ParcelInProgressScreenState createState() => _ParcelInProgressScreenState();
+  _NotYetDeliveredScreenState createState() => _NotYetDeliveredScreenState();
 }
 
-class _ParcelInProgressScreenState extends State<ParcelInProgressScreen> {
+class _NotYetDeliveredScreenState extends State<NotYetDeliveredScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: SimpleAppBar(
-          title: "Order In Progress",
+          title: "Pending Delivery",
         ),
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("orders")
               .where("riderUID", isEqualTo: sharedPreferences!.getString('uid'))
-              .where("status", isEqualTo: "picking")
+              .where("status", isEqualTo: "delivering")
               .snapshots(),
           builder: (c, snapshot) {
             return snapshot.hasData
