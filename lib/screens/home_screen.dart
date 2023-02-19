@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:food_riders_app/assistant/get_current_location.dart';
 import 'package:food_riders_app/authentication/auth_screen.dart';
 import 'package:food_riders_app/global/global.dart';
+import 'package:food_riders_app/screens/earnings_screen.dart';
+import 'package:food_riders_app/screens/history_screen.dart';
 import 'package:food_riders_app/screens/new_orders_screen.dart';
 import 'package:food_riders_app/screens/not_yet_delivered.dart';
 import 'package:food_riders_app/screens/parcel_in_progress_screen.dart';
@@ -77,9 +79,22 @@ class _HomeScreenState extends State<HomeScreen> {
             }
             if (index == 3) {
               // history
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Historycreen(),
+                ),
+              );
             }
             if (index == 4) {
               // total earnings
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EraningsScreen(),
+                ),
+              );
             }
             if (index == 5) {
               // log out

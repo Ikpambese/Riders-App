@@ -13,13 +13,14 @@ class ParcelDeliveringScreen extends StatefulWidget {
   double? purchaserLng;
   String? sellerId;
   String? getOrderId;
-  ParcelDeliveringScreen(
-      {this.getOrderId,
-      this.purchaserAddress,
-      this.purchaserId,
-      this.purchaserLat,
-      this.purchaserLng,
-      this.sellerId});
+  ParcelDeliveringScreen({
+    this.getOrderId,
+    this.purchaserAddress,
+    this.purchaserId,
+    this.purchaserLat,
+    this.purchaserLng,
+    this.sellerId,
+  });
 
   @override
   State<ParcelDeliveringScreen> createState() => _ParcelDeliveringScreenState();
@@ -29,30 +30,34 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
   String orderTotalAmount = '';
   confirmParcelHasBeenDelivered(getOrderId, sellerId, purchaserId,
       purchaserAddress, purchaserLat, purchaserLng) {
-    String riderNewTotalEarningAmount = ((double.parse(previousRiderEarnings) +
-            (double.parse(perParcelDeliveryAmount))))
+    // String riderNewTotalEarningAmount = ((double.parse(previousRiderEarnings) +
+    //         (double.parse(perParcelDeliveryAmount)))
+    //     .toString());
+    String riderNewTotalEarningAmount = ((double.parse(previousRiderEarnings)) +
+            (double.parse(perParcelDeliveryAmount)))
         .toString();
     FirebaseFirestore.instance.collection('orders').doc(getOrderId).update({
       'status': 'ended',
       'address': completeAddress,
       'lat': position!.latitude,
       'lng': position!.longitude,
-      'earnings': perParcelDeliveryAmount //pay per delivery
+      'earnings': perParcelDeliveryAmount, //pay per delivery
     }).then((value) {
       FirebaseFirestore.instance
           .collection('riders')
           .doc(sharedPreferences!.getString('uid'))
           .update({
-        'earnings': riderNewTotalEarningAmount, // total rider earnings
-      }).then((value) {
-        FirebaseFirestore.instance
-            .collection('sellers')
-            .doc(widget.sellerId)
-            .update({
-          'earnings': (double.parse(orderTotalAmount) +
-                  (double.parse(previousEarnings)))
-              .toDouble(),
-        });
+        'earnings':
+            riderNewTotalEarningAmount.toString(), // total rider earnings
+      });
+    }).then((value) {
+      FirebaseFirestore.instance
+          .collection('sellers')
+          .doc(widget.sellerId)
+          .update({
+        'earnings':
+            (double.parse(orderTotalAmount) + (double.parse(previousEarnings)))
+                .toString(),
       });
     }).then((value) {
       FirebaseFirestore.instance
@@ -121,10 +126,11 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
               onTap: () {
                 // from rider towards seller
                 MapUtilities.luncMapFromSourceToDestination(
-                    position!.latitude,
-                    position!.longitude,
-                    widget.purchaserLat,
-                    widget.purchaserLng);
+                  position!.latitude,
+                  position!.longitude,
+                  widget.purchaserLat,
+                  widget.purchaserLng,
+                );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -134,10 +140,10 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
                   Column(
                     children: const [
                       SizedBox(
-                        height: 13,
+                        height: 12,
                       ),
                       Text(
-                        'Show Delivery Drop off Location / Restaurant Location',
+                        'Show Delivery Drop-off Location',
                         style: TextStyle(
                           fontFamily: 'Signatra',
                           fontSize: 18,
@@ -150,7 +156,7 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
               ),
             ),
             const SizedBox(
-              height: 15,
+              height: 40,
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -173,8 +179,8 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
                     decoration: const BoxDecoration(
                         gradient: LinearGradient(
                       colors: [
-                        Colors.cyan,
-                        Colors.amber,
+                        Colors.blue,
+                        Colors.black,
                       ],
                       begin: FractionalOffset(0.0, 0.0),
                       end: FractionalOffset(1.0, 0.0),
@@ -185,7 +191,7 @@ class _ParcelDeliveringScreenState extends State<ParcelDeliveringScreen> {
                     height: 50,
                     child: const Center(
                       child: Text(
-                        "Order has been delivered/ Confirm",
+                        "Order has been delivered - Confirm",
                         style: TextStyle(color: Colors.white, fontSize: 15.0),
                       ),
                     ),
