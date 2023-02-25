@@ -45,6 +45,7 @@ dependencies:
   geolocator: ^9.0.2
   geocoding: ^2.0.5
   url_launcher: ^6.1.9
+  fluttertoast: ^8.2.1
   
 
 dev_dependencies:
