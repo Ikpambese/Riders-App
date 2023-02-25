@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_riders_app/assistant/get_current_location.dart';
 import 'package:food_riders_app/authentication/auth_screen.dart';
 import 'package:food_riders_app/global/global.dart';
@@ -8,6 +9,7 @@ import 'package:food_riders_app/screens/history_screen.dart';
 import 'package:food_riders_app/screens/new_orders_screen.dart';
 import 'package:food_riders_app/screens/not_yet_delivered.dart';
 import 'package:food_riders_app/screens/parcel_in_progress_screen.dart';
+import 'package:food_riders_app/splash/splash_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -139,14 +141,31 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  restrictctBlockedeRiders() async {
+    await FirebaseFirestore.instance
+        .collection('riders')
+        .doc(firebaseAuth.currentUser!.uid)
+        .get()
+        .then((snapshot) {
+      if (snapshot.data()!['riderSatus'] != 'approved') {
+        Fluttertoast.showToast(
+            msg: 'You have been blocked \n\n Mail Here : admin@lunchbox.com');
+        firebaseAuth.signOut();
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const MySplashScreen()));
+      } else {
+        UserLocation? uLocation = UserLocation();
+        uLocation.getCurrentLocation();
+        getParcelDeliveryAmount();
+        getRiderPreviousEarnings();
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-
-    UserLocation? uLocation = UserLocation();
-    uLocation.getCurrentLocation();
-    getParcelDeliveryAmount();
-    getRiderPreviousEarnings();
+    restrictctBlockedeRiders();
   }
 
   getRiderPreviousEarnings() {
