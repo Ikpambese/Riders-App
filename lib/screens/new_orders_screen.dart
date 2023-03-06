@@ -23,7 +23,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("orders")
-              .where("status", isEqualTo: "normal")
+              .where("status", isEqualTo: "packed") // changed normal to packed
               .orderBy("orderTime", descending: true)
               .snapshots(),
           builder: (c, snapshot) {

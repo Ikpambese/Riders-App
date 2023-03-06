@@ -25,7 +25,10 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
   // String userId = '';
 
   getOrderInfo() {
-    FirebaseFirestore.instance.collection('orders').doc(widget.orderID).get()
+    FirebaseFirestore.instance
+        .collection('orders')
+        .doc(widget.orderID)
+        .get()
         // ignore: avoid_types_as_parameter_names
         .then((DocumentSnapshot) {
       orderStatus = DocumentSnapshot.data()!['status'].toString();
@@ -74,7 +77,7 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "€  " + dataMap["totalAmount"].toString(),
+                              "₦  " + dataMap["totalAmount"].toString(),
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
