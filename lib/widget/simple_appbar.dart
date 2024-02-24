@@ -1,10 +1,10 @@
-// ignore_for_file: empty_constructor_bodies
-
 import 'package:flutter/material.dart';
 
-class SimpleAppBar extends StatelessWidget with PreferredSizeWidget {
+// ignore: must_be_immutable
+class SimpleAppBar extends StatelessWidget implements PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   String? title;
+
   SimpleAppBar({this.bottom, this.title});
 
   @override
@@ -38,8 +38,6 @@ class SimpleAppBar extends StatelessWidget with PreferredSizeWidget {
         style: const TextStyle(
             fontSize: 45, fontFamily: 'Signatra', letterSpacing: 3),
       ),
-
-      // automaticallyImplyLeading: false,
     );
   }
 }
